@@ -162,7 +162,7 @@ El plano es un objeto cinemático. El cubo es un objeto físico y la esfera es f
 
 ### Comportamiento
 
-El plano permanece fijo y el cubo interactúa físicamente con él, la esfera está sometida a la gravedad porque su Rigidbody es dinámico, pero el Collider de la esfera no crea contactos sólidos al estar marcado como Trigger. En consecuencia, la esfera puede atravesar el plano y el cubo en lugar de quedar apoyada o rebotar contra ellos. La comparación con la situación 8 permite separar los efectos de `Is Kinematic` y `Is Trigger`, donde la primera propiedad determina cómo se mueve el Rigidbody; la segunda determina si el Collider actúa como superficie sólida o como volumen de detección.
+El plano permanece fijo y el cubo interactúa físicamente con él, la esfera está sometida a la gravedad porque su Rigidbody es dinámico, pero el Collider de la esfera no crea contactos sólidos al estar marcado como Trigger. En consecuencia, la esfera puede atravesar el plano y el cubo en lugar de quedar apoyada o rebotar contra ellos. La comparación con la situación 8 permite separar los efectos de `Is Kinematic` y `Is Trigger`, donde la primera propiedad determina cómo se mueve el Rigidbody, la segunda determina si el Collider actúa como superficie sólida o como volumen de detección.
 
 **Ejecución:**  
 ![Situacion 9](Pract3/media/situacion9.gif)
@@ -220,7 +220,7 @@ Como alternativa al cambio de color, `TriggerZoneEffect` puede cambiar temporalm
 
 ### Funcionamiento de los scripts
 
-`TriggerZoneEffect` dispone de tres modos configurables. En `Awake` guarda el color original del Renderer o la intensidad original de la luz. En `OnTriggerEnter` comprueba si el objeto que entra dispone de `PlayerStatus`; si no lo tiene, ignora el contacto. Según el modo, cambia el color, aumenta la intensidad de la luz o llama a `PlayerStatus.AddDamage`. En `OnTriggerExit`, los efectos visuales restauran el valor original. El daño permanece acumulado.
+`TriggerZoneEffect` dispone de tres modos configurables. En `Awake` guarda el color original del Renderer o la intensidad original de la luz. En `OnTriggerEnter` comprueba si el objeto que entra dispone de `PlayerStatus`, si no lo tiene, ignora el contacto. Según el modo, cambia el color, aumenta la intensidad de la luz o llama a `PlayerStatus.AddDamage`. En `OnTriggerExit`, los efectos visuales restauran el valor original. El daño permanece acumulado.
 
 `PlayerStatus` conserva el contador de daño y ofrece `AddDamage(int amount)`. El método ignora valores no positivos, suma el incremento y escribe en la consola el total acumulado.
 
@@ -277,15 +277,15 @@ Se crean tres Physics Materials desde el panel Project:
 | `PM_Rugoso`      |                                `1 / 0.9` |        `0` | Friction: Maximum         |
 | `PM_ReboteAlto`  |                              `0.3 / 0.3` |      `0.9` | Bounce: Maximum           |
 
-Los valores son una configuración inicial para hacer más visibles las diferencias; se asigna cada material al campo `Material` del Collider correspondiente. Se crean objetos con Collider y Rigidbody dinámico, y se añade `ForceOnX.cs`. Para observar las diferencias conviene disponer cada objeto sobre una superficie o zona con espacio de movimiento.
+Los valores son una configuración inicial para hacer más visibles las diferencias, se asigna cada material al campo `Material` del Collider correspondiente. Se crean objetos con Collider y Rigidbody dinámico, y se añade `ForceOnX.cs`. Para observar las diferencias conviene disponer cada objeto sobre una superficie o zona con espacio de movimiento.
 
 ### Funcionamiento del script
 
-`ForceOnX` detecta la pulsación de X en `Update` y almacena la petición. En `FixedUpdate` comprueba si el Rigidbody no es cinemático y si la dirección tiene longitud distinta de cero; entonces normaliza la dirección y llama a `AddForce` con `ForceMode.Impulse`. La dirección y la intensidad del impulso se configuran desde el Inspector. El impulso se solicita una vez por pulsación.
+`ForceOnX` detecta la pulsación de X en `Update` y almacena la petición. En `FixedUpdate` comprueba si el Rigidbody no es cinemático y si la dirección tiene longitud distinta de cero, entonces normaliza la dirección y llama a `AddForce` con `ForceMode.Impulse`. La dirección y la intensidad del impulso se configuran desde el Inspector. El impulso se solicita una vez por pulsación.
 
 ### Ejecución
 
-Al pulsar X, los objetos reciben un impulso. Con el material resbaladizo se reduce la fricción y tiende a mantenerse el deslizamiento; con el rugoso, la fricción tiende a oponerse más al movimiento tangencial; con el material de rebote alto, el contacto puede producir un rebote más acusado. El resultado también depende del material y del modo de combinación del otro Collider, la velocidad y la geometría del contacto.
+Al pulsar X, los objetos reciben un impulso. Con el material resbaladizo se reduce la fricción y tiende a mantenerse el deslizamiento, con el rugoso, la fricción tiende a oponerse más al movimiento tangencial, con el material de rebote alto, el contacto puede producir un rebote más acusado. El resultado también depende del material y del modo de combinación del otro Collider, la velocidad y la geometría del contacto.
 
 ![Ejercicio 5](Pract3/media/ej5.gif)
 
