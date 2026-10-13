@@ -42,12 +42,12 @@ El plano no es un objeto físico. El cubo es un objeto físico y la esfera tambi
 ### Configuración
 
 * **Plane:** solo Collider, sin Rigidbody.
-* **Cube:** Collider y Rigidbody dinámico, con masa inicial `1`.
-* **Sphere:** Collider y Rigidbody dinámico, con masa inicial `1`.
+* **Cube:** Collider y Rigidbody dinámico.
+* **Sphere:** Collider y Rigidbody dinámico.
 
 ### Comportamiento
 
-El plano continúa fijo, el cubo y la esfera están controlados por la física y responden a la gravedad. La esfera desciende desde su posición inicial y puede hacer contacto con el cubo, al ser ambos dinámicos, el contacto puede modificar el movimiento de los dos. Después, los objetos quedan apoyados si la geometría y sus posiciones permiten el equilibrio. La diferencia respecto a la situación 1 es que la esfera ya no es un elemento estático, tiene un Rigidbody propio y puede caer y reaccionar a las colisiones.
+El plano continúa fijo, el cubo y la esfera están controlados por la física y responden a la gravedad. La esfera desciende desde su posición inicial y puede hacer contacto con el cubo, al ser ambos dinámicos, el contacto puede modificar el movimiento de los dos. Después, los objetos quedan apoyados si sus posiciones permiten el equilibrio. La diferencia respecto a la situación 1 es que la esfera ya no es un elemento estático, tiene un Rigidbody propio y puede caer y reaccionar a las colisiones.
 
 **Ejecución:**  
 ![Situacion 2](Pract3/media/situacion2.gif)
@@ -78,11 +78,9 @@ El plano es un objeto físico. El cubo es un objeto físico y la esfera es físi
 * **Cube:** Collider y Rigidbody dinámico.
 * **Sphere:** Collider y Rigidbody dinámico.
 
-El `Plane` primitivo suele tener un `MeshCollider` no convexo. Para utilizarlo en un Rigidbody dinámico se sustituye dicho componente por un `BoxCollider` grande y fino, por ejemplo con `Size = (10, 0.1, 10)` y `Center = (0, -0.05, 0)`, de forma que su cara superior coincida aproximadamente con la superficie del plano. Un MeshCollider no convexo no es una configuración válida para un Rigidbody dinámico.
-
 ### Comportamiento
 
-El plano deja de ser un suelo inmóvil, al tener un Rigidbody dinámico, también está sometido a la gravedad y puede desplazarse. Por ello, el conjunto ya no dispone de una superficie fija que sostenga al cubo y a la esfera. Los tres cuerpos se mueven según las fuerzas y los contactos que se produzcan.
+El plano deja de ser un suelo inmóvil, al tener un Rigidbody dinámico, también está sometido a la gravedad y puede desplazarse. Por ello, el conjunto ya no dispone de una superficie fija que sostenga al cubo y a la esfera. Los tres cuerpos se mueven según las fuerzas y los contactos que se produzcan, haciendo que caigan por la gravedad.
 La prueba muestra por qué los suelos y paredes que no deben moverse suelen utilizar un Collider sin Rigidbody. Añadir un Rigidbody dinámico a una superficie cambia su función en la escena.
 
 **Ejecución:**  
@@ -113,7 +111,7 @@ Se mantienen los componentes de la situación 5, pero la masa de la esfera se ca
 
 ### Comportamiento
 
-El plano continúa inmóvil y ambos objetos dinámicos están sometidos a la gravedad. En los impactos, la diferencia de masa es más notable, el cuerpo de masa `100` suele cambiar menos su velocidad mientras el cuerpo de masa `1` puede experimentar una variación más grande. La diferencia solo puede apreciarse en la respuesta al contacto, la masa no multiplica la aceleración gravitatoria.
+El plano continúa inmóvil y ambos objetos dinámicos están sometidos a la gravedad. En los impactos, la diferencia de masa es más notable, el cuerpo de masa `100` suele cambiar menos su velocidad mientras el cuerpo de masa `1` puede experimentar una variación más grande. La diferencia solo puede apreciarse en la respuesta al contacto, donde el golpe es más brusco, la masa no multiplica la aceleración gravitatoria.
 
 **Ejecución:**  
 ![Situacion 6](Pract3/media/situacion6.gif)
@@ -123,14 +121,14 @@ El plano es un objeto físico. El cubo es un objeto físico y la esfera es físi
 
 ### Configuración
 
-* **Plane:** Collider y Rigidbody dinámico. Para el Rigidbody dinámico se sustituye el MeshCollider no convexo por un BoxCollider grande y fino, como en la situación 4.
+* **Plane:** Collider y Rigidbody dinámico.
 * **Cube:** Collider y Rigidbody dinámico.
 * **Sphere:** Collider y Rigidbody dinámico.
-* Se crea un `Physics Material` y se asigna al Collider de la esfera. Para la prueba puede configurarse, por ejemplo, con fricción estática `0.8`, fricción dinámica `0.8` y `Friction Combine = Maximum`.
+* Se crea un `Physics Material` y se asigna al Collider de la esfera. Para la prueba añadi por ejemplo fricción estática `0.8`, fricción dinámica `0.8` y `Friction Combine = Maximum`.
 
 ### Comportamiento
 
-El plano también es dinámico, por lo que no permanece fijo como un suelo convencional. El material físico de la esfera incrementa la fricción durante el deslizamiento en los contactos con otros Colliders, siempre según las propiedades de ambos materiales y sus modos de combinación. La fricción se aprecia cuando existe movimiento tangencial entre superficies, ya que si no hay deslizamiento, la diferencia puede ser menos visible.
+El plano también es dinámico, por lo que no permanece fijo como un suelo convencional. El material físico de la esfera incrementa la fricción durante el deslizamiento en los contactos con otros Colliders, siempre según las propiedades de ambos materiales y sus modos de combinación. La fricción se aprecia cuando existe movimiento entre superficies, ya que si no hay deslizamiento, la diferencia puede ser menos visible.
 
 **Ejecución:**  
 ![Situacion 7](Pract3/media/situacion7.gif)
@@ -146,7 +144,7 @@ El plano es un objeto cinemático. El cubo es un objeto físico y la esfera no e
 
 ### Comportamiento
 El plano se mantiene fijo y el cubo queda apoyado sobre él, la esfera permanece en su posición al ser cinemática y no tener gravedad. Su Collider no actúa como una superficie sólida porque tiene `Is Trigger` activado, por tanto, si un cuerpo atraviesa su volumen no será frenado por una colisión sólida.
-Con las transformaciones iniciales indicadas, la esfera queda separada del cubo y no se produce solapamiento durante la ejecución inicial.
+Con las transformaciones iniciales indicadas, la esfera queda separada del cubo y no se produce solapamiento durante la ejecución.
 
 **Ejecución:**  
 ![Situacion 8](Pract3/media/situacion8.gif)
@@ -176,12 +174,11 @@ Crea un personaje,controla su desplazamiento con las teclas WASD o las flechas, 
 
 ### Cómo se ha construido
 
-Se crea una escena con un `Plane` como suelo y una `Capsule` como personaje. La cápsula se coloca aproximadamente en `(0, 1, 0)`, conserva su Collider y recibe un Rigidbody con `Use Gravity` activado. Se añade `PlayerRigidbodyController.cs` y se ajusta `Speed` desde el Inspector, por ejemplo a `5`.
+Se crea una escena con un `Plane` como suelo y una `Capsule` como personaje. La cápsula se coloca en `(0, 1, 0)`, conserva su Collider y recibe un Rigidbody con `Use Gravity` activado. Se añade `Ej1Player.cs` y se ajusta `Speed` desde el Inspector, por ejemplo a `5`.
 
 ### Funcionamiento del script
 
-`PlayerRigidbodyController` lee los ejes `Horizontal` y `Vertical` en `Update`, que permiten usar WASD y las flechas cuando están configurados los ejes clásicos. La dirección se limita a longitud máxima `1` para que el movimiento diagonal no sea más rápido. En `FixedUpdate`, el script modifica las componentes X y Z de `Rigidbody.linearVelocity` y conserva la componente vertical, de modo que la gravedad sigue controlando la caída.
-
+`PlayerRigidbodyController` lee los ejes `Horizontal` y `Vertical` en `Update`, que permiten usar WASD y las flechas cuando están configurados los ejes. La dirección se limita a longitud máxima `1` para que el movimiento diagonal no sea más rápido. En `FixedUpdate`, el script modifica las componentes X y Z de `Rigidbody.linearVelocity` y conserva la componente vertical, de modo que la gravedad sigue controlando la caída.
 También congela la rotación para evitar que los impactos tumben la cápsula y activa interpolación para suavizar la representación del movimiento. El personaje se controla en el plano horizontal mediante un Rigidbody, sin cambiar su Transform para simular movimiento.
 
 ### Ejecución
@@ -195,13 +192,11 @@ Crea varios cubos o esferas con Rigidbody dinámico. Muestra por consola el nomb
 
 ### Cómo se ha construido
 
-Se crea una escena con varios cubos o esferas y un plano. Los objetos que deben caer reciben un Collider y un Rigidbody dinámico. Se añade `CollisionColorLogger.cs` a cada objeto del que se quieren registrar los contactos y se deja `Is Trigger` desactivado para probar colisiones sólidas.
+Se crea una escena con varios cubos o esferas y un plano. Los objetos que deben caer reciben un Collider y un Rigidbody dinámico. Se añade `Ej2CollisionColor.cs` a cada objeto del que se quieren registrar los contactos y se deja `Is Trigger` desactivado para probar colisiones sólidas.
 
 ### Funcionamiento del script
 
-El método `OnCollisionEnter(Collision collision)` se ejecuta cuando comienza una colisión sólida. El script consulta `collision.gameObject.name` para mostrar en la consola el nombre del otro objeto y cambia el color del Renderer del objeto que tiene el script.
-
-Si se activa `Change Other Object Too`, también cambia el color del objeto contactado cuando este contiene un Renderer. El método auxiliar `SetColor` comprueba que el Renderer existe antes de cambiar su material.
+El método `OnCollisionEnter(Collision collision)` se ejecuta cuando comienza una colisión sólida. El script consulta `collision.gameObject.name` para mostrar en la consola el nombre del otro objeto y cambia el color del Renderer del objeto que tiene el script. Si se activa `Change Other Object Too`, también cambia el color del objeto al que se ha tocado cuando este contiene un Renderer. El método auxiliar `SetColor` comprueba que el Renderer existe antes de cambiar su material.
 
 ### Ejecución
 
@@ -214,15 +209,11 @@ Crea una zona (por ejemplo, un cubo grande con Is Trigger = true). Al entrar, ca
 
 ### Cómo se ha construido
 
-Se crea un cubo de mayor tamaño para representar una zona y se marca `Is Trigger` en su BoxCollider. Se añade `TriggerZoneEffect.cs`. Para el efecto visual se selecciona `Change Color`, se asigna el Renderer del personaje y se establece un color alternativo. En una segunda zona se selecciona `Add Damage` y se configura el incremento, por ejemplo `10`. Al objeto raíz del personaje se añade `PlayerStatus.cs`.
-
-Como alternativa al cambio de color, `TriggerZoneEffect` puede cambiar temporalmente la intensidad de una luz: para ello se elige `Change Light Intensity` y se asigna una Light.
+Se crea un cubo de mayor tamaño para representar una zona y se marca `Is Trigger` en su BoxCollider. Se añade `Ej3TriggerZone.cs`. Para el efecto visual se selecciona `Change Color`, se asigna el Renderer del personaje y se establece un color alternativo. En una segunda zona se selecciona `Add Damage` y se configura el incremento, por ejemplo `10`. Al objeto raíz del personaje se añade `Ej3PlayerStatus.cs`. Como alternativa al cambio de color, `Ej3TriggerZone` puede cambiar temporalmente la intensidad de una luz, y para ello se elige `Change Light Intensity` y se asigna una Light.
 
 ### Funcionamiento de los scripts
 
-`TriggerZoneEffect` dispone de tres modos configurables. En `Awake` guarda el color original del Renderer o la intensidad original de la luz. En `OnTriggerEnter` comprueba si el objeto que entra dispone de `PlayerStatus`, si no lo tiene, ignora el contacto. Según el modo, cambia el color, aumenta la intensidad de la luz o llama a `PlayerStatus.AddDamage`. En `OnTriggerExit`, los efectos visuales restauran el valor original. El daño permanece acumulado.
-
-`PlayerStatus` conserva el contador de daño y ofrece `AddDamage(int amount)`. El método ignora valores no positivos, suma el incremento y escribe en la consola el total acumulado.
+`Ej3TriggerZone` dispone de tres modos configurables. En `Awake` guarda el color original del Renderer o la intensidad original de la luz. En `OnTriggerEnter` comprueba si el objeto que entra dispone de `Ej3PlayerStatus`, si no lo tiene, ignora el contacto. Según el modo, cambia el color, aumenta la intensidad de la luz o llama a `PlayerStatus.AddDamage`. En `OnTriggerExit`, los efectos visuales restauran el valor original. El daño permanece acumulado. `PlayerStatus` conserva el contador de daño y ofrece `AddDamage(int amount)`. El método ignora valores no positivos, suma el incremento y escribe en la consola el total acumulado.
 
 ### Ejecución
 
@@ -235,9 +226,7 @@ Crea tres tipos de objetos en capas distintas: jugador, enemigos, recolectables.
 
 ### Cómo se ha construido
 
-Desde **Edit > Project Settings > Tags and Layers** se crean las capas `Player`, `Enemies` y `Collectibles`, y se asignan a los objetos de la escena. En **Edit > Project Settings > Physics** se configura la `Layer Collision Matrix`.
-
-La configuración de referencia entre las tres capas de la práctica es:
+Desde **Edit -> Project Settings -> Tags and Layers** se crean las capas `Player`, `Enemies` y `Collectibles`, y se asignan a los objetos de la escena. En **Edit -> Project Settings -> Physics** se configura la `Layer Collision Matrix`. La configuración de referencia entre las tres capas es:
 
 | Par de capas                    | Interacción                  | Motivo                                                               |
 | ------------------------------- | ---------------------------- | -------------------------------------------------------------------- |
@@ -248,15 +237,11 @@ La configuración de referencia entre las tres capas de la práctica es:
 | `Collectibles` – `Collectibles` | Desactivada                  | Los recolectables no interactúan entre ellos.                        |
 | `Player` – `Player`             | Desactivada para esta prueba | Evita que los objetos de la capa jugador colisionen entre sí.        |
 
-Si el suelo usa una capa adicional `Environment`, se dejan habilitadas las interacciones con Player y Enemies para que puedan apoyarse en él. De este modo se conserva la función de suelo sin permitir colisiones entre enemigos y recolectables.
-
-Cada recolectable recibe un Collider con `Is Trigger` activado y el script `CollectibleTrigger.cs`. El jugador debe tener Collider, Rigidbody y `PlayerStatus`.
+Cada recolectable recibe un Collider con `Is Trigger` activado y el script `Ej4CollectibleTrigger.cs`. El jugador debe tener Collider, Rigidbody y `Ej3PlayerStatus`. El personaje debe tener un Collider, un Rigidbody y el componente `Ej3PlayerStatus`, cuando entre en el área de recogida, el objeto desaparecerá porque se desactivará su GameObject.
 
 ### Funcionamiento del script
 
-`CollectibleTrigger` implementa `OnTriggerEnter`. Busca `PlayerStatus` en el objeto que entra o en sus padres. Si no lo encuentra, ignora la entrada. Si lo encuentra, escribe en la consola el nombre del jugador y el recolectable, y desactiva el GameObject del recolectable mediante `SetActive(false)`.
-
-La matriz de colisiones filtra qué pares de capas interactúan, mientras que `Is Trigger` permite detectar el solapamiento sin convertir el recolectable en un obstáculo sólido.
+`Ej4CollectibleTrigger` implementa `OnTriggerEnter`. Busca `Ej3PlayerStatus` en el objeto que entra, y si no lo encuentra, ignora la entrada. Si lo encuentra, escribe en la consola el nombre del jugador y el recolectable, y desactiva el GameObject del recolectable mediante `SetActive(false)`. La matriz de colisiones filtra qué pares de capas interactúan, mientras que `Is Trigger` permite detectar el solapamiento sin convertir el recolectable en un obstáculo sólido.
 
 ### Ejecución
 
@@ -271,13 +256,13 @@ Crea una escena con distintos materiales físicos (resbaladizo, rugoso, rebote a
 
 Se crean tres Physics Materials desde el panel Project:
 
-| Material         | Fricción estática/dinámica de referencia | Bounciness | Combinación de referencia |
-| ---------------- | ---------------------------------------: | ---------: | ------------------------- |
-| `PM_Resbaladizo` |                                  `0 / 0` |        `0` | Friction: Minimum         |
-| `PM_Rugoso`      |                                `1 / 0.9` |        `0` | Friction: Maximum         |
-| `PM_ReboteAlto`  |                              `0.3 / 0.3` |      `0.9` | Bounce: Maximum           |
+| Material         | Dynamic Friction/Static Friction         | Bounciness | Bounce/Friction Combine          |
+| ---------------- | ---------------------------------------: | ---------: | ---------------------------------|
+| `PM_Resbaladizo` |                                  `0 / 0` |        `0` | Friction: Minimum                |
+| `PM_Rugoso`      |                                `0.9 / 1` |        `0` | Friction: Maximum                |
+| `PM_ReboteAlto`  |                              `0.3 / 0.3` |      `0.9` | Bounce: Maximum                  |
 
-Los valores son una configuración inicial para hacer más visibles las diferencias, se asigna cada material al campo `Material` del Collider correspondiente. Se crean objetos con Collider y Rigidbody dinámico, y se añade `ForceOnX.cs`. Para observar las diferencias conviene disponer cada objeto sobre una superficie o zona con espacio de movimiento.
+Los valores son una configuración inicial para hacer más visibles las diferencias, se asigna cada material al campo `Material` del Collider correspondiente. Se crean objetos con Collider y Rigidbody dinámico, y se añade `Ej5ForceOnX.cs`. Para observar las diferencias conviene disponer cada objeto sobre una superficie o zona con espacio de movimiento.
 
 ### Funcionamiento del script
 
@@ -285,7 +270,7 @@ Los valores son una configuración inicial para hacer más visibles las diferenc
 
 ### Ejecución
 
-Al pulsar X, los objetos reciben un impulso. Con el material resbaladizo se reduce la fricción y tiende a mantenerse el deslizamiento, con el rugoso, la fricción tiende a oponerse más al movimiento tangencial, con el material de rebote alto, el contacto puede producir un rebote más acusado. El resultado también depende del material y del modo de combinación del otro Collider, la velocidad y la geometría del contacto.
+Al pulsar X, los objetos reciben un impulso. Con el material resbaladizo se reduce la fricción y tiende a mantenerse el deslizamiento, con el rugoso, la fricción tiende a oponerse más al movimiento, con el material de rebote alto, el contacto produce un rebote continuo. El resultado también depende del material y del modo de combinación del otro Collider, la velocidad y el contacto.
 
 ![Ejercicio 5](Pract3/media/ej5.gif)
 
@@ -302,18 +287,14 @@ Se crea una esfera, un cubo y un cilindro alineados sobre el eje X. Como disposi
 | Cube     | `(0, 0.5, 0)`  |
 | Cylinder | `(3, 0.5, 0)`  |
 
-El cubo se sitúa entre la esfera y el cilindro. Los tres objetos conservan su Collider correspondiente, pero **ninguno lleva Rigidbody**, tal como exige el enunciado. Se crea un material para el cubo después del contacto y se añade `MoveSphereToGoal.cs` a la esfera.
-
-En el Inspector se asignan `Target` (Transform del cilindro), `Moving Sphere Collider` (SphereCollider de la esfera), `Obstacle Collider` (Collider del cubo), `Obstacle Renderer` (Renderer del cubo) y `Obstacle Hit Material` (material que se aplicará). Se puede comenzar con `Speed = 2`.
+El cubo se sitúa entre la esfera y el cilindro. Los tres objetos conservan su Collider correspondiente, pero **ninguno lleva Rigidbody**. Se crea un material para el cubo después del contacto y se añade `Ej6MoveSphere.cs` a la esfera. En el Inspector se asignan `Target` (Transform del cilindro), `Moving Sphere Collider` (SphereCollider de la esfera), `Obstacle Collider` (Collider del cubo), `Obstacle Renderer` (Renderer del cubo) y `Obstacle Hit Material` (material que se aplicará). Se puede cambiar la velocidad, en este caso será `Speed = 2`.
 
 ### Funcionamiento del script
 
-`MoveSphereToGoal` mueve la esfera gradualmente hacia el Transform objetivo mediante `Vector3.MoveTowards`, escalando el movimiento con `Time.deltaTime`. Como ningún objeto tiene Rigidbody, no se utiliza `OnCollisionEnter`. En cada actualización se llama a `Physics.ComputePenetration`, que comprueba si el SphereCollider y el Collider del cubo se solapan en las posiciones indicadas. Cuando detecta el solapamiento, el script asigna el material nuevo al Renderer del cubo, marca `obstacleChanged` para evitar repetir la acción y escribe un mensaje en la consola.
-
-Esta comprobación detecta el solapamiento geométrico: no simula una reacción física ni hace que el cubo bloquee la esfera.
+`Ej6MoveSphere` mueve la esfera gradualmente hacia el Transform objetivo mediante `Vector3.MoveTowards`, escalando el movimiento con `Time.deltaTime`. Como ningún objeto tiene Rigidbody, no se utiliza `OnCollisionEnter`. En cada actualización se llama a `Physics.ComputePenetration`, que comprueba si el SphereCollider y el Collider del cubo se solapan en las posiciones indicadas. Cuando detecta el solapamiento, el script asigna el material nuevo al Renderer del cubo, marca `obstacleChanged` para evitar repetir la acción y escribe un mensaje en la consola. Esta comprobación detecta el solapamiento, que no simula una reacción física ni hace que el cubo bloquee la esfera.
 
 ### Ejecución
 
-La esfera avanza hacia el cilindro y atraviesa el área del cubo porque no existe una simulación de cuerpos rígidos para estos objetos. Cuando su Collider se solapa con el del cubo, el cubo cambia al material asignado y se registra el contacto geométrico en la consola. La esfera continúa hacia el objetivo.
+La esfera avanza hacia el cilindro y atraviesa el área del cubo porque no existe una simulación de cuerpos rígidos para estos objetos. Cuando su Collider se solapa con el del cubo, el cubo cambia al material asignado y se registra el contacto en la consola, y después la esfera continúa hacia el objetivo.
 
 ![Ejercicio 6](Pract3/media/ej6.gif)
